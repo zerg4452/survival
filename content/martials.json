@@ -1,0 +1,57 @@
+{
+  "_source": "GAME_DESIGN.md 6장 초기 실험값. 각도는 전체 각(D-006), active_time은 D-010, passive_defense는 D-013.",
+  "martials": [
+    {
+      "id": "cheongun_sword",
+      "family": "SWORD",
+      "slot": "MAIN",
+      "display_name": "청운검법",
+      "damage": 24,
+      "interval": 0.65,
+      "mp_cost": 6,
+      "max_targets": 3,
+      "active_time": 0.1,
+      "passive_defense": 0,
+      "shape": { "kind": "SECTOR", "radius": 2.0, "angle_deg_total": 90 }
+    },
+    {
+      "id": "swaeam_blade",
+      "family": "BLADE",
+      "slot": "MAIN",
+      "display_name": "쇄암도법",
+      "damage": 40,
+      "interval": 1.0,
+      "mp_cost": 12,
+      "max_targets": 5,
+      "active_time": 0.1,
+      "passive_defense": 0,
+      "shape": { "kind": "SECTOR", "radius": 2.6, "angle_deg_total": 140 }
+    },
+    {
+      "id": "pajin_spear",
+      "family": "SPEAR",
+      "slot": "MAIN",
+      "display_name": "파진창법",
+      "damage": 48,
+      "interval": 1.15,
+      "mp_cost": 14,
+      "max_targets": 4,
+      "active_time": 0.1,
+      "passive_defense": 0,
+      "shape": { "kind": "RECT_FORWARD", "x_min_exclusive": 1.0, "x_max": 4.5, "half_width": 0.4 }
+    },
+    {
+      "id": "yeonhwan_fist",
+      "family": "FIST",
+      "slot": "MAIN",
+      "display_name": "연환권법",
+      "damage": 15,
+      "interval": 0.3,
+      "mp_cost": 2,
+      "max_targets": 1,
+      "active_time": 0.1,
+      "passive_defense": 10,
+      "shape": { "kind": "SECTOR", "radius": 1.2, "angle_deg_total": 80 }
+    }
+  ]
+}

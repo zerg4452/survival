@@ -1,0 +1,43 @@
+{
+  "_source": "GAME_DESIGN.md 3·5·7·13장과 DECISIONS.md(D-014, D-017, D-021)의 초기 실험값.",
+  "player": {
+    "max_hp": 100,
+    "move_speed": 4.0,
+    "body_radius": 0.35,
+    "hit_invuln": 0.35,
+    "base_defense": 0,
+    "max_mp": 100,
+    "mp_regen": 12.0
+  },
+  "dash": {
+    "distance": 2.5,
+    "duration": 0.18,
+    "iframe": 0.12,
+    "charges": 1,
+    "recharge": 4.0
+  },
+  "combat": {
+    "basic_damage_ratio": 0.65,
+    "defense_min": 0,
+    "defense_max": 300,
+    "contact_margin": 0.1
+  },
+  "arena": {
+    "size": 51,
+    "wall": 1,
+    "start": [25.5, 25.5]
+  },
+  "camera": {
+    "visible_rows": 15
+  },
+  "m0_spawn": {
+    "enemy_id": "blood_jiangshi",
+    "rate": 1.5,
+    "min_dist": 8,
+    "max_dist": 13,
+    "tries": 16,
+    "telegraph": 0.8,
+    "normal_cap": 300,
+    "debt_cap": 2.0
+  }
+}

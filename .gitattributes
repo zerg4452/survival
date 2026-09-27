@@ -1,0 +1,4 @@
+# Godot 4: 줄바꿈을 LF로 통일
+* text=auto eol=lf
+*.png binary
+*.zip binary

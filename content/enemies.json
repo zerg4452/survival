@@ -1,0 +1,15 @@
+{
+  "_source": "GAME_DESIGN.md 13.2 초기 실험값. body_radius는 D-014. exp는 M1부터 사용.",
+  "enemies": [
+    {
+      "id": "blood_jiangshi",
+      "display_name": "혈강시",
+      "max_hp": 20,
+      "move_speed": 1.6,
+      "contact_damage": 8,
+      "contact_interval": 1.0,
+      "body_radius": 0.35,
+      "exp": 1
+    }
+  ]
+}

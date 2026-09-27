@@ -1,0 +1,26 @@
+; Engine configuration file.
+; Godot 4.7.2.stable.official.ed1daf0bf 기준. 버전 기록은 README.md 참조.
+
+config_version=5
+
+[application]
+
+config/name="만법귀종: 혈겁 (프로토타입)"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+run/main_scene="res://scenes/main.tscn"
+
+[debug]
+
+gdscript/warnings/untyped_declaration=2
+
+[display]
+
+window/size/viewport_width=1600
+window/size/viewport_height=900
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
