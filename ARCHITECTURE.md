@@ -139,7 +139,8 @@ m0_spawn: enemy_id blood_jiangshi, rate 1.5, min_dist 8, max_dist 13, tries 16, 
 |---|---|---|
 | `definition` | MartialDefinition | 선택한 주공 |
 | `cooldown_remaining` | float | 0.0 (D-009) |
-| `last_aim_dir` | Vector2 | (1, 0) |
+| `last_aim_x`, `last_aim_y` | float(64비트) | 1.0, 0.0. 경계 판정 정밀도 때문에 Vector2 대신 스칼라 두 개로 둔다(D-007). `last_aim_dir()`로 Vector2를 얻는다 |
+| `last_target_pos`, `last_fire_tick` | Vector2, int | 표시·디버그용 |
 
 M2에서 추가: `mastery_points: int`, `five_star_unlocked: bool`, `apex_unlocked: bool`, `effective_hit_counter: int`, `focus_training_count: int`, `last_body_hit_tick: int`.
 
@@ -159,11 +160,15 @@ M2에서 추가: `mastery_points: int`, `five_star_unlocked: bool`, `apex_unlock
 | `next_entity_id` | int | 적·공격 인스턴스 공용. 재사용하지 않는다 |
 | `debug_used` | bool | D-022 |
 | `stats` | RunStats | 처치 수, 가한/받은 피해, 정상/기본 초식 발동 수, 경공 사용 수 |
-| `result` | RunResult 또는 null | 사유(M0는 DEATH만), 생존 시간, 처치 수, 마지막 피해 원인 |
+| `result` | RunResult 또는 null | 사유(M0는 DEATH만), 종료 틱, 생존 시간, 처치 수, 마지막 피해 원인 |
+| `last_damage_source` | String | 결과 화면용 |
+| `deaths_this_tick` | Array[int] | 이번 틱에 사망이 확정된 적 ID. 틱 시작마다 비운다 |
+| `attack_log`, `death_log` | 배열(상한 32, 64) | 표시 전용 기록. 규칙에 쓰지 않는다(D-023) |
+| `auto_spawn`, `enemy_hp_mult`, `debug_invincible` | bool, float, bool | 디버그 조작 상태(D-022). 테스트에서도 사용 |
 
-`PlayerState`: `pos: Vector2`, `hp`, `max_hp`, `mp`, `max_mp`, `mp_regen`, `move_speed`, `defense`(= base + 주공 `passive_defense`), `hit_invuln_remaining`, `last_move_dir: Vector2`, `dash_charges: int`, `dash_recharge_remaining`, `dash_remaining`, `dash_dir: Vector2`, `dash_iframe_remaining`.
+`PlayerState`: `pos: Vector2`, `hp`, `max_hp`, `mp`, `max_mp`, `mp_regen`, `move_speed`, `body_radius`, `defense`(= base + 주공 `passive_defense`), `hit_invuln_remaining`, `move_input: Vector2`(이번 틱 입력), `last_move_dir: Vector2`, `dash_max_charges: int`, `dash_charges: int`, `dash_recharge_remaining`, `dash_remaining`, `dash_dir: Vector2`, `dash_iframe_remaining`.
 
-`EnemyState`: `id: int`, `definition`, `pos: Vector2`, `hp`, `max_hp`, `alive: bool`, `telegraph_remaining`, `contact_cooldown_remaining`.
+`EnemyState`: `id: int`, `definition`, `pos: Vector2`, `hp`, `max_hp`, `alive: bool`(한 번만 false가 됨), `active: bool`(스폰 예고 종료), `telegraph_remaining`, `contact_cooldown_remaining`, `last_hit_tick`(표시용).
 
 M2~M3에서 추가: 장착 목록(4슬롯), 선택 상태, 판당 부활 소진 여부, 판 시작 경지 스냅샷. `ProfileState`는 M3에서 만든다.
 
@@ -177,10 +182,11 @@ M2~M3에서 추가: 장착 목록(4슬롯), 선택 상태, 판당 부활 소진 
 | `source_id` | 주공 정의 ID |
 | `effect_kind` | MAIN_NORMAL, MAIN_BASIC (D-011) |
 | `can_trigger_procs` | M0는 항상 false. 파생 효과가 생기는 M2부터 사용한다 |
-| `origin`, `dir` | 생성 시 고정 |
+| `created_tick` | 생성 틱. 생성 틱에는 활성 시간과 무관하게 판정한다 |
+| `origin`, `dir_x`, `dir_y` | 생성 시 고정. 방향은 64비트 스칼라(D-007), `dir()`로 Vector2를 얻는다 |
 | `shape`, `damage`, `max_targets` | 생성 시 확정한 값 |
 | `remaining_active` | `active_time`에서 시작 |
-| `hit_ids` | Dictionary(적 ID → true). 인스턴스당 1회 명중 보장(T16) |
+| `hit_ids`, `hit_count` | Dictionary[int, bool]와 명중 수. 인스턴스당 1회 명중과 활성 시간 전체의 최대 대상 수를 보장(T16) |
 | `forced_first_target_id` | 주 목표. 생성 틱에 무조건 포함 (D-008) |
 
 ## 6. 순수 함수 (테스트 대상)

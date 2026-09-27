@@ -78,6 +78,10 @@ static func parse_martial(d: Dictionary, ctx: String, errors: Array[String]) -> 
 	m.max_targets = _int(d, "max_targets", ctx, errors, 1)
 	m.active_time = _num(d, "active_time", ctx, errors, 0.0, true)
 	m.passive_defense = _num(d, "passive_defense", ctx, errors, 0.0, true)
+	# 활성 시간이 간격 이상이면 이전 인스턴스가 새 인스턴스의 주 목표를 먼저 처치해
+	# 내공만 쓰고 빗나갈 수 있다(M0 리뷰 R03). 공격속도 보너스가 생기면 적용 후 간격으로 다시 확인한다.
+	if errors.size() == before and m.active_time >= m.interval:
+		errors.append("%s.active_time 은 interval 보다 짧아야 함 (%s >= %s)" % [ctx, str(m.active_time), str(m.interval)])
 	if d.has("shape") and d["shape"] is Dictionary:
 		m.shape = parse_shape(d["shape"], ctx + ".shape", errors)
 	else:

@@ -83,6 +83,16 @@ func test_unknown_shape_kind_is_error() -> bool:
 	return true
 
 
+func test_active_time_must_be_shorter_than_interval() -> bool:
+	var errors: Array[String] = []
+	var d: Dictionary = _valid_martial()
+	d["active_time"] = 1.0
+	d["interval"] = 1.0
+	check(ContentLoader.parse_martial(d, "t", errors) == null, "활성 시간 = 간격 거부")
+	check(errors.size() == 1 and errors[0].contains("active_time"), "active_time 오류: %s" % str(errors))
+	return true
+
+
 func test_valid_dict_parses() -> bool:
 	var errors: Array[String] = []
 	var m: MartialDefinition = ContentLoader.parse_martial(_valid_martial(), "t", errors)

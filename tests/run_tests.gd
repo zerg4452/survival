@@ -5,8 +5,18 @@ extends SceneTree
 
 const TEST_DIR: String = "res://tests"
 
+var _started: bool = false
 
-func _initialize() -> void:
+
+## 트리가 완전히 준비된 첫 프레임에 실행한다. _initialize 시점에는 root 에 추가한 노드의 _ready 가 호출되지 않는다.
+func _process(_delta: float) -> bool:
+	if not _started:
+		_started = true
+		_run_all()
+	return false
+
+
+func _run_all() -> void:
 	var filter: String = ""
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--filter="):

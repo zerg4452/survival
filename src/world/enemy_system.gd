@@ -39,15 +39,18 @@ func move_enemies(state: RunState, cfg: CombatConfig, dt: float) -> void:
 			e.pos -= n * push
 			o.pos += n * push
 
+	# 경공 중에는 적 몸체를 통과한다(GAME_DESIGN 7.2). 끝난 뒤 겹쳐 있으면 그때 밀어낸다(D-014).
+	var push_out: bool = not p.is_dashing()
 	for e: EnemyState in state.enemies:
 		if not e.is_targetable():
 			continue
-		var away: Vector2 = e.pos - p.pos
-		var min_pd: float = p.body_radius + e.definition.body_radius
-		var ad: float = away.length()
-		if ad < min_pd:
-			var n: Vector2 = away / ad if ad > 1e-6 else Vector2.RIGHT.rotated(float(e.id) * TIE_ANGLE)
-			e.pos = p.pos + n * min_pd
+		if push_out:
+			var away: Vector2 = e.pos - p.pos
+			var min_pd: float = p.body_radius + e.definition.body_radius
+			var ad: float = away.length()
+			if ad < min_pd:
+				var n: Vector2 = away / ad if ad > 1e-6 else Vector2.RIGHT.rotated(float(e.id) * TIE_ANGLE)
+				e.pos = p.pos + n * min_pd
 		e.pos = Arena.clamp_circle(cfg, e.pos, e.definition.body_radius)
 
 

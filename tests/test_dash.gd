@@ -105,3 +105,31 @@ func test_move_input_ignored_while_dashing() -> bool:
 	check_near(sim.state.player.pos.y, 25.5, 1e-6, "경공 중 이동 입력 무시")
 	check_near(sim.state.player.pos.x, 28.0, 1e-4, "경공 거리 유지")
 	return true
+
+
+## M0 리뷰 R01: 경공 중에는 적 몸체를 통과한다(GAME_DESIGN 7.2). 정면·측면 모두 적을 밀지 않는다.
+func test_dash_passes_through_enemy() -> bool:
+	for lateral: float in [0.0, 0.1, 0.3]:
+		var sim: RunSimulation = SimFixture.make(&"pajin_spear")
+		var e: EnemyState = SimFixture.spawn_still(sim, Vector2(26.8, 25.5 + lateral))
+		var start: Vector2 = e.pos
+		_dash(sim, Vector2.RIGHT)
+		SimFixture.run(sim, 12)
+		check(sim.state.player.pos.x > e.pos.x + 0.7, "측면 %.1f: 플레이어가 적을 지나감" % lateral)
+		check(e.pos.distance_to(start) < 1e-5, "측면 %.1f: 적이 밀리지 않음(이동 %.3f)" % [lateral, e.pos.distance_to(start)])
+	return true
+
+
+## 경공이 끝난 순간 겹쳐 있으면 그때 밀어낸다(D-014). 보행 중 밀어내기는 유지된다.
+func test_overlap_after_dash_and_walking_push_unchanged() -> bool:
+	var sim: RunSimulation = SimFixture.make(&"pajin_spear")
+	var e: EnemyState = SimFixture.spawn_still(sim, Vector2(28.0, 25.5))
+	_dash(sim, Vector2.RIGHT)
+	SimFixture.run(sim, 10)
+	check(not sim.state.player.is_dashing(), "경공 종료")
+	check(e.pos.distance_to(sim.state.player.pos) >= 0.7 - 1e-4, "종료 후 겹침 해소")
+	var sim2: RunSimulation = SimFixture.make(&"pajin_spear")
+	var e2: EnemyState = SimFixture.spawn_still(sim2, Vector2(26.3, 25.5))
+	SimFixture.run(sim2, 30, Vector2.RIGHT)
+	check(e2.pos.x > 26.3 + 0.5, "보행 중에는 정면 적을 밀어냄(D-014)")
+	return true
