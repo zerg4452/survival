@@ -110,6 +110,7 @@ EPS = 1e-6
 | `active_time` | float | ≥ 0. D-010 |
 | `passive_defense` | float | 연환권법만 10. D-013 |
 | `shape` | object | 종류별 필드. 누락되면 로드 오류 |
+| `parry` | object, 선택 | `window`(>0), `counter_damage_ratio`(≥0). 연환권법만 있음(D-025). 없으면 패링 없음 |
 
 M2에서 추가: `five_star_effect_id`, `apex_effect_id`, 숙련도 성장 규칙 참조.
 
@@ -163,7 +164,7 @@ M2에서 추가: `mastery_points: int`, `five_star_unlocked: bool`, `apex_unlock
 | `result` | RunResult 또는 null | 사유(M0는 DEATH만), 종료 틱, 생존 시간, 처치 수, 마지막 피해 원인 |
 | `last_damage_source` | String | 결과 화면용 |
 | `deaths_this_tick` | Array[int] | 이번 틱에 사망이 확정된 적 ID. 틱 시작마다 비운다 |
-| `attack_log`, `death_log` | 배열(상한 32, 64) | 표시 전용 기록. 규칙에 쓰지 않는다(D-023) |
+| `attack_log`, `death_log`, `parry_log` | 배열(상한 32, 64, 32) | 표시 전용 기록. 규칙에 쓰지 않는다(D-023) |
 | `auto_spawn`, `enemy_hp_mult`, `debug_invincible` | bool, float, bool | 디버그 조작 상태(D-022). 테스트에서도 사용 |
 
 `PlayerState`: `pos: Vector2`, `hp`, `max_hp`, `mp`, `max_mp`, `mp_regen`, `move_speed`, `body_radius`, `defense`(= base + 주공 `passive_defense`), `hit_invuln_remaining`, `move_input: Vector2`(이번 틱 입력), `last_move_dir: Vector2`, `dash_max_charges: int`, `dash_charges: int`, `dash_recharge_remaining`, `dash_remaining`, `dash_dir: Vector2`, `dash_iframe_remaining`.

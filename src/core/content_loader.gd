@@ -82,6 +82,13 @@ static func parse_martial(d: Dictionary, ctx: String, errors: Array[String]) -> 
 	# 내공만 쓰고 빗나갈 수 있다(M0 리뷰 R03). 공격속도 보너스가 생기면 적용 후 간격으로 다시 확인한다.
 	if errors.size() == before and m.active_time >= m.interval:
 		errors.append("%s.active_time 은 interval 보다 짧아야 함 (%s >= %s)" % [ctx, str(m.active_time), str(m.interval)])
+	if d.has("parry"):
+		if d["parry"] is Dictionary:
+			var pd: Dictionary = d["parry"]
+			m.parry_window = _num(pd, "window", ctx + ".parry", errors, 0.0, false)
+			m.parry_counter_ratio = _num(pd, "counter_damage_ratio", ctx + ".parry", errors, 0.0, true)
+		else:
+			errors.append("%s.parry 는 객체여야 함" % ctx)
 	if d.has("shape") and d["shape"] is Dictionary:
 		m.shape = parse_shape(d["shape"], ctx + ".shape", errors)
 	else:

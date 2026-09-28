@@ -174,6 +174,7 @@ func _show_result() -> void:
 		"주공   %s" % s.main_martial.definition.display_name,
 		"마지막 피해   %s" % (r.last_damage_source if not r.last_damage_source.is_empty() else "-"),
 		"정상 / 기본 초식   %d / %d" % [s.stats.normal_attacks, s.stats.basic_attacks],
+		"피격 / 패링   %d / %d" % [s.stats.contact_hits, s.stats.parries],
 		"시드   %d" % s.seed,
 	]
 	if s.debug_used:
@@ -218,7 +219,7 @@ func _debug_text() -> String:
 	var onoff: Callable = func(v: bool) -> String: return "켬" if v else "끔"
 	return "\n".join(PackedStringArray([
 		"틱 %d · FPS %d · 시뮬 %.3f ms/틱 · 버린 틱 %d" % [s.tick, Engine.get_frames_per_second(), _tick_ms_avg, runner.dropped_ticks],
-		"정상/기본 초식 %d / %d · 경공 %d · 피격 %d" % [s.stats.normal_attacks, s.stats.basic_attacks, s.stats.dashes, s.stats.contact_hits],
+		"정상/기본 초식 %d / %d · 경공 %d · 피격 %d · 패링 %d" % [s.stats.normal_attacks, s.stats.basic_attacks, s.stats.dashes, s.stats.contact_hits, s.stats.parries],
 		"시드 %d · 다음 판 고정 시드 %s" % [s.seed, onoff.call(fixed_seed_enabled)],
 		"적 체력 ×%s · 자동 스폰 %s · 무적 %s" % [str(s.enemy_hp_mult), onoff.call(s.auto_spawn), onoff.call(s.debug_invincible)],
 		"",

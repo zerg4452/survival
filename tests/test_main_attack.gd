@@ -151,6 +151,10 @@ func test_overkill_same_tick_counts_one_kill() -> bool:
 func test_fist_defense_applies_once() -> bool:
 	for row: Array in [[&"yeonhwan_fist", 8.0 * 100.0 / 110.0], [&"cheongun_sword", 8.0]]:
 		var sim: RunSimulation = SimFixture.make(row[0])
+		# 패링(D-025)을 끈 복사본으로 방어식만 확인한다. 방어력은 판 시작 때 이미 반영되어 있다.
+		var def: MartialDefinition = SimFixture.clone_martial(sim.state.main_martial.definition)
+		def.parry_window = 0.0
+		sim.state.main_martial.definition = def
 		SimFixture.spawn_still(sim, Vector2(26.2, 25.5))
 		SimFixture.run(sim, 1)
 		check_near(sim.state.player.hp, 100.0 - float(row[1]), 1e-9, "%s 접촉 피해" % row[0])

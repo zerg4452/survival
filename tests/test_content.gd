@@ -17,7 +17,7 @@ func test_t02_martial_values_match_design_table() -> bool:
 		[&"cheongun_sword", MartialDefinition.Family.SWORD, 24.0, 0.65, 6.0, 3, ShapeDef.Kind.SECTOR, 2.0, 90.0],
 		[&"swaeam_blade", MartialDefinition.Family.BLADE, 40.0, 1.0, 12.0, 5, ShapeDef.Kind.SECTOR, 2.6, 140.0],
 		[&"pajin_spear", MartialDefinition.Family.SPEAR, 48.0, 1.15, 14.0, 4, ShapeDef.Kind.RECT_FORWARD, 0.0, 0.0],
-		[&"yeonhwan_fist", MartialDefinition.Family.FIST, 15.0, 0.3, 2.0, 1, ShapeDef.Kind.SECTOR, 1.2, 80.0],
+		[&"yeonhwan_fist", MartialDefinition.Family.FIST, 15.0, 0.3, 2.0, 1, ShapeDef.Kind.SECTOR, 1.5, 80.0],
 	]
 	for row: Array in rows:
 		var m: MartialDefinition = c.martial(row[0])

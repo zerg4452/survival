@@ -6,6 +6,7 @@ enum Phase { RUNNING, PAUSED, RESULT }
 
 const ATTACK_LOG_CAP: int = 32
 const DEATH_LOG_CAP: int = 64
+const PARRY_LOG_CAP: int = 32
 
 var seed: int = 0
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -32,6 +33,8 @@ var deaths_this_tick: Array[int] = []
 var attack_log: Array[AttackInstance] = []
 ## x, y = 위치, z = 사망 틱
 var death_log: Array[Vector3] = []
+## x, y = 패링한 적 위치, z = 틱
+var parry_log: Array[Vector3] = []
 
 # ---- 디버그(D-022) ----
 var auto_spawn: bool = true
@@ -59,6 +62,12 @@ func log_death(pos: Vector2) -> void:
 	death_log.append(Vector3(pos.x, pos.y, float(tick)))
 	if death_log.size() > DEATH_LOG_CAP:
 		death_log.pop_front()
+
+
+func log_parry(pos: Vector2) -> void:
+	parry_log.append(Vector3(pos.x, pos.y, float(tick)))
+	if parry_log.size() > PARRY_LOG_CAP:
+		parry_log.pop_front()
 
 
 func active_enemy_count() -> int:

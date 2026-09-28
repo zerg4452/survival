@@ -8,6 +8,7 @@ const PPC: float = 64.0
 ## 공격 도형을 표시할 틱 수(시뮬레이션 활성 시간과 무관한 표시용).
 const ATTACK_SHOW_TICKS: int = 9
 const DEATH_SHOW_TICKS: int = 30
+const PARRY_SHOW_TICKS: int = 14
 
 const C_OUTSIDE: Color = Color(0.03, 0.03, 0.04)
 const C_WALL: Color = Color(0.24, 0.2, 0.2)
@@ -43,6 +44,7 @@ func _draw() -> void:
 		if e.active:
 			_draw_enemy(e, s.tick)
 	_draw_player(s)
+	_draw_parries(s)
 	if show_debug:
 		_draw_debug(s, cfg)
 
@@ -71,6 +73,19 @@ func _draw_deaths(s: RunState) -> void:
 		var c: Color = Color(C_ENEMY, 0.8 * a)
 		draw_line(p + Vector2(-r, -r), p + Vector2(r, r), c, 3.0)
 		draw_line(p + Vector2(-r, r), p + Vector2(r, -r), c, 3.0)
+
+
+## 패링(D-025): 막아낸 적 위치에 퍼지는 이중 링.
+func _draw_parries(s: RunState) -> void:
+	for d: Vector3 in s.parry_log:
+		var age: int = s.tick - int(d.z)
+		if age < 0 or age > PARRY_SHOW_TICKS:
+			continue
+		var t: float = float(age) / float(PARRY_SHOW_TICKS)
+		var p: Vector2 = Vector2(d.x, d.y) * PPC
+		var c: Color = Color(1, 1, 1, 0.9 * (1.0 - t))
+		draw_arc(p, (0.3 + 0.4 * t) * PPC, 0.0, TAU, 24, c, 3.0)
+		draw_arc(p, (0.15 + 0.3 * t) * PPC, 0.0, TAU, 16, c, 1.5)
 
 
 func _draw_telegraph(e: EnemyState, total: float) -> void:

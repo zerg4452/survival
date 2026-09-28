@@ -67,6 +67,15 @@ static func contact_damage(state: RunState, cfg: CombatConfig) -> void:
 			continue
 		if p.is_invulnerable() or state.debug_invincible:
 			continue
+		var main_def: MartialDefinition = state.main_martial.definition
+		if main_def.has_parry() and MainAttackSystem.in_parry_window(state, main_def.parry_window):
+			# 패링(D-025): 피해 무효, 적의 접촉 대기시간은 소모, 플레이어 피격 무적은 시작하지 않는다.
+			# 반격은 추가 효과를 재발동하지 않는 단일 피해다.
+			e.contact_cooldown_remaining = e.definition.contact_interval
+			state.stats.parries += 1
+			state.log_parry(e.pos)
+			MainAttackSystem.apply_damage_to_enemy(state, e, main_def.damage * main_def.parry_counter_ratio)
+			continue
 		var dmg: float = Damage.after_defense(e.definition.contact_damage, p.defense, cfg)
 		p.hp -= dmg
 		state.stats.damage_taken += dmg

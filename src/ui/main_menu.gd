@@ -72,6 +72,8 @@ static func _describe(n: int, m: MartialDefinition) -> String:
 	else:
 		shape = "전방 %s칸 초과~%s칸 · 폭 %s칸" % [_num(m.shape.x_min_exclusive), _num(m.shape.x_max), _num(m.shape.half_width * 2.0)]
 	var extra: String = " · 방어 +%d" % int(m.passive_defense) if m.passive_defense > 0.0 else ""
+	if m.has_parry():
+		extra += " · 패링(공격 전후 %s초)" % _num(m.parry_window)
 	return "[%d] %s (%s)\n피해 %s · 간격 %s초 · 내공 %s · 최대 %d명\n%s%s" % [
 		n, m.display_name, fam, _num(m.damage), _num(m.interval), _num(m.mp_cost), m.max_targets, shape, extra]
 

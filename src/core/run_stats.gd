@@ -9,3 +9,4 @@ var normal_attacks: int = 0
 var basic_attacks: int = 0
 var dashes: int = 0
 var contact_hits: int = 0
+var parries: int = 0

@@ -66,6 +66,16 @@ static func resolve(state: RunState) -> void:
 			apply_damage_to_enemy(state, e, inst.damage)
 
 
+## 패링 창(D-025): 마지막 주공 발동 후 window 초 이내, 또는 다음 발동까지 window 초 이내.
+## 접촉 거리(0.8칸)는 권법 사거리 안이므로 대기시간이 끝나면 반드시 발동한다. 그래서 "다음 발동"을 대기시간으로 판단한다.
+static func in_parry_window(state: RunState, window: float) -> bool:
+	var rt: MartialRuntime = state.main_martial
+	var since: float = float(state.tick - rt.last_fire_tick) * SimConstants.FIXED_DT
+	if since <= window + SimConstants.EPS:
+		return true
+	return rt.cooldown_remaining <= window + SimConstants.EPS
+
+
 ## 적 방어력은 M0 에서 0 이므로 방어식 결과는 원 피해와 같다.
 static func apply_damage_to_enemy(state: RunState, e: EnemyState, dmg: float) -> void:
 	if not e.alive:

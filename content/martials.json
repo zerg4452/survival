@@ -1,5 +1,5 @@
 {
-  "_source": "GAME_DESIGN.md 6장 초기 실험값. 각도는 전체 각(D-006), active_time은 D-010, passive_defense는 D-013.",
+  "_source": "GAME_DESIGN.md 6장 초기 실험값. 각도는 전체 각(D-006), active_time은 D-010, passive_defense는 D-013, 권 사거리 1.5는 D-024, parry는 D-025.",
   "martials": [
     {
       "id": "cheongun_sword",
@@ -51,7 +51,8 @@
       "max_targets": 1,
       "active_time": 0.1,
       "passive_defense": 10,
-      "shape": { "kind": "SECTOR", "radius": 1.2, "angle_deg_total": 80 }
+      "parry": { "window": 0.1, "counter_damage_ratio": 1.0 },
+      "shape": { "kind": "SECTOR", "radius": 1.5, "angle_deg_total": 80 }
     }
   ]
 }

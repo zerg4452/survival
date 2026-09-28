@@ -52,6 +52,8 @@ static func clone_martial(src: MartialDefinition) -> MartialDefinition:
 	m.active_time = src.active_time
 	m.passive_defense = src.passive_defense
 	m.shape = src.shape
+	m.parry_window = src.parry_window
+	m.parry_counter_ratio = src.parry_counter_ratio
 	return m
 
 
@@ -65,7 +67,7 @@ static func snapshot(sim: RunSimulation) -> String:
 	parts.append("dash=%d/%s/%s/%s" % [p.dash_charges, var_to_str(p.dash_recharge_remaining), var_to_str(p.dash_remaining), var_to_str(p.dash_iframe_remaining)])
 	parts.append("inv=%s cd=%s" % [var_to_str(p.hit_invuln_remaining), var_to_str(s.main_martial.cooldown_remaining)])
 	parts.append("kills=%d normal=%d basic=%d acc=%s" % [s.stats.kills, s.stats.normal_attacks, s.stats.basic_attacks, var_to_str(s.spawn_acc)])
-	parts.append("dashes=%d hits=%d taken=%s dealt=%s" % [s.stats.dashes, s.stats.contact_hits, var_to_str(s.stats.damage_taken), var_to_str(s.stats.damage_dealt)])
+	parts.append("dashes=%d hits=%d parries=%d taken=%s dealt=%s" % [s.stats.dashes, s.stats.contact_hits, s.stats.parries, var_to_str(s.stats.damage_taken), var_to_str(s.stats.damage_dealt)])
 	for e: EnemyState in s.enemies:
 		parts.append("e%d=%s,%s,%s" % [e.id, var_to_str(e.pos), var_to_str(e.hp), str(e.active)])
 	return "\n".join(parts)

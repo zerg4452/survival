@@ -57,14 +57,15 @@ func test_t23_frame_rate_independent() -> bool:
 		"144fps": func(_f: int) -> float: return 1.0 / 144.0,
 		"irregular": func(f: int) -> float: return irregular[f % irregular.size()],
 	}
-	for martial: StringName in [&"cheongun_sword", &"pajin_spear"]:
+	for martial: StringName in [&"cheongun_sword", &"pajin_spear", &"yeonhwan_fist"]:
 		var ref: String = ""
 		for name: String in sequences:
 			var snap: String = _run_with_frames(martial, sequences[name])
 			check(not snap.is_empty(), "%s %s: %d틱 도달" % [martial, name, TARGET_TICK])
 			if ref.is_empty():
 				ref = snap
-				check(_stat(snap, "hits") > 0, "%s: 접촉 피해가 실제로 발생(%d회)" % [martial, _stat(snap, "hits")])
+				var contacts: int = _stat(snap, "hits") + _stat(snap, "parries")
+				check(contacts > 0, "%s: 접촉(피격+패링)이 실제로 발생(%d회)" % [martial, contacts])
 				check(_stat(snap, "dashes") == 2, "%s: 경공 2회" % martial)
 				check(_stat(snap, "kills") > 0, "%s: 처치 발생" % martial)
 			else:
